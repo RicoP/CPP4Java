@@ -1,19 +1,19 @@
 #include "rationalnumber.h"
 
-bool rnIsValid(RationalNumber n) {
+char rnIsValid(RationalNumber n) {
     return n.denominator != 0;
 }
 
-bool rnIsNaN(RationalNumber n) {
+char rnIsNaN(RationalNumber n) {
     return !rnIsValid(n);
 }
 
-bool rnEqual(RationalNumber a, RationalNumber b) {
+char rnEqual(RationalNumber a, RationalNumber b) {
     return a.nominator * b.denominator == a.denominator * b.nominator;
 }
 
-bool rnLessThan(RationalNumber a, RationalNumber b) {    
-    if(b.denominator > 0 && a.denominator > 0 || b.denominator < 0 && a.denominator < 0)
+char rnLessThan(RationalNumber a, RationalNumber b) {
+    if( (b.denominator > 0 && a.denominator > 0) || (b.denominator < 0 && a.denominator < 0) )
         return a.nominator * b.denominator < a.denominator * b.nominator;
     else
         return a.nominator * b.denominator > a.denominator * b.nominator;

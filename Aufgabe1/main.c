@@ -3,6 +3,7 @@
 */
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <assert.h>
 
 #include "rationalnumber.h"
@@ -10,8 +11,9 @@
 int main()
 {
 
+
     printf("Performing unit tests for RationalNumber...");
-    fflush(stdout);
+    //fflush(stdout);
 
     /* Part 1 - RationalNumber data type */
     RationalNumber  n1 = { 3, 4 },
@@ -48,4 +50,3 @@ int main()
 
     return 0;
 }
-
