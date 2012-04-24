@@ -13,12 +13,7 @@ struct RationalNumberArray {
 };
 
 RationalNumberArray* rnaCreate() {
-	RationalNumberArray* rna = (RationalNumberArray*) malloc(sizeof(RationalNumberArray)); 
-	rna->data = NULL; 
-	rna->size = 0; 
-	rna->capacity = 0; 
-
-	return rna; 
+	return rnaCreate(10); 	
 }
 
 RationalNumberArray* rnaCreate(int capacity) {
@@ -46,24 +41,26 @@ void rnaResize(RationalNumberArray* rna, int size) {
 	rna->size = MIN(rna->size, rna->capacity); 
 }
 
-int rnaSize(RationalNumberArray* rna) {
+int rnaSize(RationalNumberArray const* const rna) {
 	return rna->size; 
 }
  
-int rnaCapacity(RationalNumberArray* rna) {
+int rnaCapacity(RationalNumberArray const* const rna) {
 	return rna->capacity; 
 }
  
 void rnaSet(RationalNumberArray* rna, int n, RationalNumber rn) {
+	int from, to; 
+
 	if(n < rna->size) {
 		rna->data[n] = rn; 
 		return; 
 	}
 	
 	if(n < rna->capacity) {
-		RationalNumber rn = {0, 1}; 
-		for(int from = rna->size, int to = n - 1; from < to; from++) {
-			rna->data[from] = rn; 
+		RationalNumber zero = {0, 1}; 
+		for(from = rna->size, to = n - 1; from < to; from++) {
+			rna->data[from] = zero; 
 		}
 		rna->data[n] = rn;
 		rna->size = n+1; 
@@ -78,8 +75,8 @@ void rnaAdd(RationalNumberArray* rna, RationalNumber rn) {
 	rnaSet(rna, rna->size, rn); 
 }
 
-RationalNumber rnaGet(RationalNumberArray* rna, int n) {
-	assert(n > 0 && n < rna->size); 
+RationalNumber rnaGet(RationalNumberArray const* const rna, int n) {
+	assert(n >= 0 && n < rna->size); 
 
 	return rna->data[n]; 
 } 
@@ -90,7 +87,7 @@ void rnaRemove(RationalNumberArray* rna, int from, int to) {
 	assert(to < rna->size); 
 
 	int i, j; 	
-	for(i = from, j = to + 1; j < rna->size; i++,j++) {
+	for(i = from, j = to; j < rna->size; i++,j++) {
 		rna->data[i] = rna->data[j]; 
 	}
 

@@ -38,7 +38,6 @@ void rnaRemove(RationalNumberArray* rna, int from, int to);
 */
 
 	RationalNumberArray* rna = rnaCreate(); 
-	assert(rnaSize(rna) == rnaCapacity(rna)); 
 	assert(rnaSize(rna) == 0); 
 
 	rnaResize(rna, 10); 
@@ -61,7 +60,24 @@ void rnaRemove(RationalNumberArray* rna, int from, int to);
 	
 	assert(rnaSize(rna) == 5); 
 
+	assert(rnEqual(rnaGet(rna, 0), rn1)); 
 
+	rnaRemove(rna, 1, 4); 
+
+	assert(rnEqual(rnaGet(rna, 0), rn1)); 
+	assert(rnEqual(rnaGet(rna, 1), rn5)); 
+
+	assert(rnaSize(rna) == 2); 
+
+	rnaAdd(rna, rn2);
+	rnaAdd(rna, rn3);
+	rnaAdd(rna, rn4);
+
+	assert(rnaSize(rna) == 5); 
+
+	assert(rnEqual( rnaGet(rna, 2), rn2)); 
+	assert(rnEqual( rnaGet(rna, 3), rn3)); 
+	assert(rnEqual( rnaGet(rna, 4), rn4)); 
 
     printf(" successful!\n");
 
