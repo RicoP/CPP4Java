@@ -3,18 +3,22 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 
 #include "rationalnumber.h"
 #include "rationalnumberarray.h"
 
+void fail(char* message) {
+	printf("ERROR: %s\n", message); 
+	exit(1);
+}
+
 int main()
 {
     printf("Performing unit tests for RationalNumberArray...");
-    //fflush(stdout);
 
-    /* Part 1 - RationalNumber data type */
     RationalNumber  n1 = { 3, 4 },
                     n2 = { 6, 4 },
                     n3 = { 3, 2 },
@@ -24,24 +28,11 @@ int main()
                     n0 = { 0, 4 },
                     nn = { 4, 0 };
 
-/*
-RationalNumberArray* rnaCreate(); 
-RationalNumberArray* rnaCreate(int capacity); 
-void rnaDelete(RationalNumberArray* rna);  
-void rnaResize(RationalNumberArray* rna, int size);  
-int rnaSize(RationalNumberArray* rna); 
-int rnaCapacity(RationalNumberArray* rna); 
-void rnaAdd(RationalNumberArray* rna, RationalNumber rn);
-void rnaSet(RationalNumberArray* rna, int n, RationalNumber rn); 
-RationalNumber rnaGet(RationalNumberArray* rna, int n); 
-void rnaRemove(RationalNumberArray* rna, int from, int to); 
-*/
-
-	RationalNumberArray* rna = rnaCreate(); 
+	RationalNumberArray* rna = rnaCreate(10, fail); 
 	assert(rnaSize(rna) == 0); 
 
 	rnaResize(rna, 10); 
-	RationalNumberArray* rna2 = rnaCreate(10); 
+	RationalNumberArray* rna2 = rnaCreate(10, fail); 
 
 	assert(rnaCapacity(rna) == rnaCapacity(rna2)); 
 	assert(rnaSize(rna) == rnaSize(rna2)); 
@@ -78,6 +69,15 @@ void rnaRemove(RationalNumberArray* rna, int from, int to);
 	assert(rnEqual( rnaGet(rna, 2), rn2)); 
 	assert(rnEqual( rnaGet(rna, 3), rn3)); 
 	assert(rnEqual( rnaGet(rna, 4), rn4)); 
+
+	//This will fail.
+
+	//rnaGet(rna, -1); 
+	//rnaGet(rna, rnaSize(rna)); 
+	//rnaRemove(rna, -1, 1); 
+	//rnaRemove(rna, 0, -1);
+	//rnaRemove(rna, 0, 9999999);  
+	//rnaResize(rna, -10); 
 
     printf(" successful!\n");
 
