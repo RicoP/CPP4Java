@@ -1,5 +1,5 @@
 /*
-   Simple Unit Test for type RationalNumber
+   Simple Unit Test for type RationalNumberArray
 */
 
 #include <stdio.h>
@@ -51,12 +51,12 @@ int main()
 	
 	assert(rna.size() == 5); 
 
-	assert(rn1.equal( rna.get(0) )); 
+	assert(rn1.equal( rna[0] )); 
 
 	rna.remove(1, 4); 
 
-	assert(rn1.equal(rna.get(0))); 
-	assert(rn5.equal(rna.get(1))); 
+	assert(rn1.equal(rna[0])); 
+	assert(rn5.equal(rna[1])); 
 
 	assert(rna.size() == 2); 
 
@@ -66,9 +66,9 @@ int main()
 
 	assert(rna.size() == 5); 
 
-	assert(rn2.equal( rna.get(2) )); 
-	assert(rn3.equal( rna.get(3) )); 
-	assert(rn4.equal( rna.get(4) )); 
+	assert(rn2.equal( rna[2] )); 
+	assert(rn3.equal( rna[3] )); 
+	assert(rn4.equal( rna[4] )); 
 
 	//This will fail.
 

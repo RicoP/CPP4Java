@@ -89,3 +89,14 @@ void RationalNumberArray::remove(int from, int to) {
 	resize(this->_size - (to - from)); 
 }
 
+RationalNumber RationalNumberArray::operator[](int n) const {
+	xassert(this, n >= 0 && n < _size); 
+
+	return this->numbers[n]; 
+}
+
+RationalNumber& RationalNumberArray::operator[](int n) {
+	xassert(this, n >= 0 && n < _size); 
+
+	return this->numbers[n]; 
+}

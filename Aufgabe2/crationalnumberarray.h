@@ -18,7 +18,6 @@ class RationalNumberArray {
 	int size(); 
 	int capacity(); 
 
-
 	RationalNumberArray();
 	RationalNumberArray(int capacity);               
 	RationalNumberArray(int capacity, Callback callback);
@@ -29,5 +28,8 @@ class RationalNumberArray {
 	void set(int n, RationalNumber& rn); 
 	RationalNumber get(int n);
 	void remove(int from, int to);
+
+	RationalNumber operator[](int n) const;
+	RationalNumber& operator[](int n);
 };
 #endif 
