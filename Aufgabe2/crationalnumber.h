@@ -3,12 +3,15 @@
 
 #include <stdio.h>
 
+namespace rnum { 
 class RationalNumber {
 	private: 
 	int nominator;
     int denominator;
 
 	public: 
+	RationalNumber(); 
+	RationalNumber(int); 
 	RationalNumber(int, int); 
 
 	char isValid();
@@ -25,7 +28,33 @@ class RationalNumber {
 	RationalNumber operator-(RationalNumber const& b);
 	RationalNumber operator/(RationalNumber const& b);
 	RationalNumber operator*(RationalNumber const& b);
-	char operator==(RationalNumber const& b);
-};
 
+	RationalNumber operator+(int const& b);
+	RationalNumber operator-(int const& b);
+	RationalNumber operator/(int const& b);
+	RationalNumber operator*(int const& b);
+
+	RationalNumber operator -() const;
+
+	char operator>(RationalNumber const& b);
+	char operator>=(RationalNumber const& b);
+	char operator<(RationalNumber const& b);
+	char operator<=(RationalNumber const& b);
+
+	char operator> (int const& b);
+	char operator>=(int const& b);
+	char operator< (int const& b);
+	char operator<=(int const& b);
+
+	char operator> (double const& b);
+	char operator>=(double const& b);
+	char operator< (double const& b);
+	char operator<=(double const& b);
+
+	char operator==(RationalNumber const& b);
+	char operator==(double const& b);
+	RationalNumber operator=(int const& b);
+	operator double() const;
+};
+}
 #endif // RATIONALNUMBER_H

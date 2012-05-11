@@ -10,42 +10,42 @@
 		rna->_callback(#expr); \
 	}
 
-RationalNumberArray::RationalNumberArray() 
+rnum::RationalNumberArray::RationalNumberArray() 
 	: _size(0), _capacity(0), _callback(NULL) {
-	this->numbers = (RationalNumber*) malloc(_capacity * sizeof(RationalNumber)); 
+	this->numbers = (rnum::RationalNumber*) malloc(_capacity * sizeof(rnum::RationalNumber)); 
 }
 
-RationalNumberArray::RationalNumberArray(int capacity) 
+rnum::RationalNumberArray::RationalNumberArray(int capacity) 
 	: _size(0), _capacity(capacity), _callback(NULL) {
-	this->numbers = (RationalNumber*) malloc(capacity * sizeof(RationalNumber)); 
+	this->numbers = (rnum::RationalNumber*) malloc(capacity * sizeof(rnum::RationalNumber)); 
 }
 
-RationalNumberArray::RationalNumberArray(int capacity, Callback callback) 
+rnum::RationalNumberArray::RationalNumberArray(int capacity, Callback callback) 
 	: _size(0), _capacity(capacity), _callback(callback) {
-	this->numbers = (RationalNumber*) malloc(capacity * sizeof(RationalNumber)); 
+	this->numbers = (rnum::RationalNumber*) malloc(capacity * sizeof(rnum::RationalNumber)); 
 }
 
-RationalNumberArray::~RationalNumberArray() {
+rnum::RationalNumberArray::~RationalNumberArray() {
 	free(this->numbers); 
 }
 
-void RationalNumberArray::resize(int size) {
+void rnum::RationalNumberArray::resize(int size) {
 	xassert(this, size > 0); 
 
-	this->numbers = (RationalNumber*) realloc(numbers, size * sizeof(RationalNumber)); 	
+	this->numbers = (rnum::RationalNumber*) realloc(numbers, size * sizeof(rnum::RationalNumber)); 	
 	this->_capacity = size; 
 	this->_size = MIN(_size, _capacity); 
 }
 
-int RationalNumberArray::size() {
+int rnum::RationalNumberArray::size() {
 	return this->_size; 
 }
 
-int RationalNumberArray::capacity() {
+int rnum::RationalNumberArray::capacity() {
 	return this->_capacity; 
 }
  
-void RationalNumberArray::set(int n, RationalNumber& rn) {
+void rnum::RationalNumberArray::set(int n, RationalNumber& rn) {
 	int from, to; 
 
 	if(n < _size) {
@@ -57,7 +57,7 @@ void RationalNumberArray::set(int n, RationalNumber& rn) {
 		this->resize(n+1); 
 	}
 		
-	RationalNumber zero(0, 1); 
+	rnum::RationalNumber zero(0, 1); 
 
 	for(from = _size, to = n - 1; from < to; from++) {
 		numbers[from] = zero; 
@@ -66,17 +66,17 @@ void RationalNumberArray::set(int n, RationalNumber& rn) {
 	_size = n+1; 
 }
 
-void RationalNumberArray::add(RationalNumber& rn) {
+void rnum::RationalNumberArray::add(RationalNumber& rn) {
 	set(size(), rn); 
 }
 
-RationalNumber RationalNumberArray::get(int n) {
+rnum::RationalNumber rnum::RationalNumberArray::get(int n) {
 	xassert(this, n >= 0 && n < _size); 
 
 	return this->numbers[n]; 
 } 
 
-void RationalNumberArray::remove(int from, int to) {
+void rnum::RationalNumberArray::remove(int from, int to) {
 	xassert(this, from <= to); 
 	xassert(this, from >= 0); 
 	xassert(this, to < _size); 
@@ -89,13 +89,13 @@ void RationalNumberArray::remove(int from, int to) {
 	resize(this->_size - (to - from)); 
 }
 
-RationalNumber RationalNumberArray::operator[](int n) const {
+rnum::RationalNumber rnum::RationalNumberArray::operator[](int n) const {
 	xassert(this, n >= 0 && n < _size); 
 
 	return this->numbers[n]; 
 }
 
-RationalNumber& RationalNumberArray::operator[](int n) {
+rnum::RationalNumber& rnum::RationalNumberArray::operator[](int n) {
 	xassert(this, n >= 0 && n < _size); 
 
 	return this->numbers[n]; 

@@ -2,6 +2,8 @@
    Simple Unit Test for type RationalNumberArray
 */
 
+#define private public 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,6 +11,8 @@
 
 #include "crationalnumber.h"
 #include "crationalnumberarray.h"
+
+using namespace rnum; 
 
 void fail(char* message) {
 	printf("ERROR: %s\n", message); 
@@ -27,6 +31,16 @@ int main()
                    n6(9, 4),
                    n0(0, 4),
                    nn(4, 0);
+
+	float n3f = (float)n3; 
+	assert( (n3f - 1.5) < 0.001 && (n3f - 1.5) > -0.001 );
+
+	assert(n0 == 0.0); 
+
+	assert(n1 < n2);
+	assert(n2 > n1);	
+	assert(n0 <= n2);
+	assert(n2 >= n0);
 
 	RationalNumberArray rna(10, fail); 
 	assert(rna.size() == 0); 
@@ -66,20 +80,22 @@ int main()
 
 	assert(rna.size() == 5); 
 
-	assert(rn2.equal( rna[2] )); 
-	assert(rn3.equal( rna[3] )); 
-	assert(rn4.equal( rna[4] )); 
+	assert(rn2 == rna[2]); 
 
-	//This will fail.
+	rna[2] = rna[4]; 
+	assert(rna[2] == rna[4]); 
 
-	//rnaGet(rna, -1); 
-	//rnaGet(rna, rnaSize(rna)); 
-	//rnaRemove(rna, -1, 1); 
-	//rnaRemove(rna, 0, -1);
-	//rnaRemove(rna, 0, 9999999);  
-	//rnaResize(rna, -10); 
+	//This will invoke the failmethod. 
+	//x = rna[-1]; 
+	//rna[-1] = x; 
+	//x = rna[99999]; 
+	//rna.remove(-1, 1); 
+	//rna.remove(1, 0); 
+	//rna.remove(0, 999999); 
+	//rna.resize(-1); 
 
     printf(" successful!\n");
 
     return 0;
 }
+

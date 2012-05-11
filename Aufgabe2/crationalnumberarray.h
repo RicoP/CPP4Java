@@ -3,6 +3,7 @@
 
 #include "crationalnumber.h" 
 
+namespace rnum {
 class RationalNumberArray { 
 	public:
 	typedef void (*Callback)(char*);
@@ -32,4 +33,5 @@ class RationalNumberArray {
 	RationalNumber operator[](int n) const;
 	RationalNumber& operator[](int n);
 };
+}
 #endif 
