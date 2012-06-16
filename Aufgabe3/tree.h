@@ -7,7 +7,7 @@
 
 namespace mystl {
     template <typename T, typename O = Less<T> >
-    class Tree {
+    class _Tree {
     private:
         TreeNode<T,O>* m_root;
         TreeNode<T,O>* m_terminate;
@@ -48,12 +48,12 @@ namespace mystl {
         }
 
         TreeIterator<T,O> insert(const T& value) {
-            if(m_root) {
-                T t = value;
+            T t = value;
+
+            if(!m_root) {
                 m_root = new TreeNode<T,O>(t, NULL);
             }
 
-            T t = value;
             TreeNode<T,O>* node = insertValue(m_root, t);
 
             return TreeIterator<T,O>(node, this);

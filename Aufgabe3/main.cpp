@@ -85,18 +85,18 @@ int main()
     MapToFirst< int, float, Less<int> > lessPair;
     cout << i_f << " < " << i_f2 << " == " << lessPair(i_f, i_f2) << endl;
 
-
     /////////////////////////////////////////
     // TEST TREE
 
     // construct empty tree
-    Tree<int> t;
+    _Tree<int> t;
     cout << "empty tree: ";
 
     assert(printAndCount(t) == 0);
 
     // insert elements in a certain order
     t.insert(4);
+#if 0 // move this line down while your implementation proceeds...
     t.insert(3);
     t.insert(2);
     t.insert(1);
@@ -146,7 +146,6 @@ int main()
     cout << "listing backwards: ";
     assert(printAndCountBackwards(ft) == 4);
 
-#if 0 // move this line down while your implementation proceeds...
     /////////////////////////////////////////
     // TEST MAP
 

@@ -20,8 +20,6 @@ namespace mystl {
         TreeNode<T,O>* m_right;
         TreeNode<T,O>* m_up;
 
-
-
     private:
         // Vorab-Deklaration
         template<typename T1, typename Op>
@@ -59,7 +57,8 @@ namespace mystl {
         }
 
     public:
-        TreeNode(T& value, TreeNode<T,O>* parent) : m_value(value), m_up(parent) {
+        TreeNode(T& value, TreeNode<T,O>* parent, TreeNode<T,O>* left, TreeNode<T,O>* right)
+            : m_value(value), m_up(parent), m_left(left), m_right(right) {
         }
 
         node* find(const T& value) {
@@ -76,8 +75,9 @@ namespace mystl {
                 return this;
             }
 
+            O op;
+
             if(m_left && !m_right) {
-                O op;
                 node* left = m_left->findFirst();
                 if(op(m_value, left->m_value))
                     return this;
@@ -86,7 +86,6 @@ namespace mystl {
             }
 
             if(!m_left && m_right) {
-                O op;
                 node* right = m_right->findFirst();
                 if(op(m_value, right->m_value))
                     return this;
@@ -95,7 +94,6 @@ namespace mystl {
             }
 
             //if(m_left && m_right)
-            O op;
             node* left = m_left->findFirst();
             node* right = m_right->findFirst();
 
