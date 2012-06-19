@@ -1,72 +1,49 @@
 #ifndef TREEITERATOR_H
 #define TREEITERATOR_H
 
+#include "less.h"
 #include "treenode.h"
-#include "tree.h"
 
 namespace mystl {
     template<typename T, typename O = Less<T> >
     class TreeIterator {
-    private:
-        TreeNode<T,O>* m_node;
-        _Tree<T,O>* m_tree;
+        typedef TreeNode<T,O> NODE;
 
-        TreeIterator<T,O> getEnd() {
-            return TreeIterator<T,O>(T(), NULL);
+    private:
+        NODE* m_node;
+
+        TreeIterator<T,O> wanderLeft(NODE* node) {
+            if(node->m_left)
+                return wanderLeft(node->m_left);
+
+            return node;
         }
 
     public:
-        TreeIterator(TreeNode<T,O>* node, _Tree<T,O>* tree) : m_node(node), m_tree(tree) {
+        TreeIterator(TreeNode<T,O>* node) : m_node(node) {
         }
 
         T& operator*() {
-            return m_node->m_value;
+            return m_node->value();
         }
 
         T* operator->() {
-            return &(m_node->m_value);
+            return &(m_node->value());
         }
 
         TreeIterator<T,O> operator++() {
-            O op;
-            TreeNode<T,O>* left = m_node->m_left;
-            TreeNode<T,O>* right = m_node->m_right;
-
-            if(!left && !right) {
-                return getEnd();
-            }
-
-            if(left && !right) {
-                if(op(left->m_value, m_node->m_value)) {
-                    return TreeIterator<T,O>(left, m_tree);
-                }
-                else {
-                    return getEnd();
-                }
-            }
-
-            if(!left && right) {
-                if(op(right->m_value, m_node->m_value)) {
-                    return TreeIterator<T,O>(right, m_tree);
-                }
-                else {
-                    return getEnd();
-                }
-            }
-
-            return TreeIterator<T,O>(m_node, m_tree);
+            NODE* node = m_node->findFirst();
+            return TreeIterator<T,O>(node);
         }
 
-        TreeIterator<T,O> operator--() {
-            return NULL;
-        }
+        //TreeIterator<T,O>& operator--()
 
         bool operator==(const TreeIterator<T,O> &rhs) {
-            return this->m_node == rhs.m_node && this->m_tree == rhs.m_tree;
+            return this->m_node == rhs.m_node;
         }
 
         bool operator!=(const TreeIterator<T,O> &rhs) {
-            return this->m_node != rhs.m_node || this->m_tree != rhs.m_tree;
+            return this->m_node != rhs.m_node;
         }
     };
 }

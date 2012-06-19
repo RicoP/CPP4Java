@@ -19,9 +19,9 @@ SOURCES += main.cpp
 
 HEADERS += \
     pair.h \
-    tree.h \
     less.h \
     greater.h \
     maptofirst.h \
+    treenode.h \
     treeiterator.h \
-    treenode.h
+    tree.h

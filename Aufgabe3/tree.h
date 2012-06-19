@@ -6,103 +6,100 @@
 #include "treeiterator.h"
 
 namespace mystl {
-    template <typename T, typename O = Less<T> >
-    class _Tree {
-    private:
-        TreeNode<T,O>* m_root;
-        TreeNode<T,O>* m_terminate;
-
+    template<typename T, typename O = Less<T> >
+    class Tree {
     public:
         typedef TreeIterator<T,O> iterator;
         typedef TreeNode<T,O> node;
 
-        Tree() : m_root(NULL), m_terminate(NULL) {
-        }
+    private:
+        TreeNode<T,O>* m_root;
 
-        ~Tree() {
-            clear();
-        }
-
-        TreeNode<T,O>* insertValue(TreeNode<T,O>* currentNode, T& value) {
-            O op;
-
-            T currentValue = currentNode->m_value;
-
-            if(op(value, currentValue)) {
-                if(!currentNode->m_left) {
-                    currentNode->m_left = new TreeNode<T,O>(value, currentNode);
-                    return currentNode->m_left;
+        iterator recInsert(node* current, const T& value, O op) {
+            if(op(value, current->m_value)) {
+                if(!current->m_left) {
+                    current->m_left = new node(value);
+                    current->m_left->m_up = current;
+                    return iterator(current->m_left);
                 }
-                return insertValue(currentNode->m_left, value);
+                return recInsert(current->m_left, value, op);
+            }
+            if(op(current->m_value, value)) {
+                if(!current->m_right) {
+                    current->m_right = new node(value);
+                    current->m_right->m_up = current;
+                    return iterator(current->m_right);
+                }
+                return recInsert(current->m_right, value, op);
             }
 
-            if(op(currentValue, value)) {
-                if(!currentNode->m_right) {
-                    currentNode->m_right = new TreeNode<T,O>(value, currentNode);
-                    return currentNode->m_right;
-                }
-                return insertValue(currentNode->m_right, value);
-            }
-
-            return currentNode;
+            current->m_value = value;
+            return iterator(current);
         }
 
-        TreeIterator<T,O> insert(const T& value) {
-            T t = value;
+        void recClear(node* n) {
+            if(n->m_left) recClear(n->m_left);
+            if(n->m_right) recClear(n->m_right);
 
+            delete n;
+        }
+    public:
+        Tree() : m_root(NULL) {
+        }
+
+        iterator insert(const T& value) {
             if(!m_root) {
-                m_root = new TreeNode<T,O>(t, NULL);
+                m_root = new node(value);
+                return begin();
             }
-
-            TreeNode<T,O>* node = insertValue(m_root, t);
-
-            return TreeIterator<T,O>(node, this);
+            else {
+                O op;
+                return recInsert(m_root, value, op);
+            }
         }
 
         void clear() {
             if(m_root) {
-                delete m_root;
-            }
-        }
-
-        TreeIterator<T,O> end() {
-            return TreeIterator<T,O>( m_terminate, this );
-            //return TreeIterator<T,O>(NULL, *this);
-        }
-
-        TreeIterator<T,O> begin() {
-            if(!m_root)
-                return end();
-
-            return first();
-        }
-
-        TreeIterator<T,O> first() {
-            if(!m_root)
-                return end();
-
-            return TreeIterator<T,O>(m_root->findFirst(), this);
-        }
-
-
-        TreeIterator<T,O> last() {
-            if(!m_root)
-                return end();
-
-            return TreeIterator<T,O>(m_root->findLast(), *this);
-        }
-
-        TreeIterator<T,O> find(const T& value) {
-            if(m_root) {
-                TreeNode<T,O>* node = m_root->find(value);
-                if(node) {
-                    return TreeIterator<T,O>(node, *this);
-                }
+                recClear(m_root);
             }
 
-            return end();
+            m_root = NULL;
+        }
+
+        iterator begin() {
+            return iterator(m_root);
+        }
+
+        iterator end() {
+            return iterator(NULL);
+        }
+
+        iterator first() {
+            if(!m_root) {
+                return end();
+            }
+
+            return iterator(m_root->findFirst());
+        }
+
+        iterator last() {
+            if(!m_root) {
+                return end();
+            }
+
+            return iterator(m_root->findLast());
+        }
+
+        iterator find(const T& value) {
+            if(!m_root) {
+                return end();
+            }
+
+            node* n = m_root->find(value);
+            return iterator(n);
         }
     };
 }
+
 
 #endif // TREE_H

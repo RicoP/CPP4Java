@@ -1,5 +1,6 @@
 #ifndef TREENODE_H
 #define TREENODE_H
+
 #include "less.h"
 
 namespace mystl {
@@ -13,128 +14,102 @@ namespace mystl {
 
     template<typename T, typename O = Less<T> >
     class TreeNode {
-    public:
-        T m_value;
+        typedef TreeNode<T,O> NODE;
 
-        TreeNode<T,O>* m_left;
-        TreeNode<T,O>* m_right;
-        TreeNode<T,O>* m_up;
+    protected:
+        T m_value;
+        NODE* m_left;
+        NODE* m_right;
+        NODE* m_up;
 
     private:
-        // Vorab-Deklaration
-        template<typename T1, typename Op>
-        class TreeIterator;
+        NODE* recFind(NODE* current, const T& value) {
+            if(!current) return NULL;
 
-        // Vorab-Deklaration
-        template<typename T1, typename Op>
-        class Tree;
-
-        typedef TreeNode<T,O> node;
-
-        bool recFind(T& value, node** returnNode) {
-            if(m_value == value) {
-                *returnNode = this;
-                return true;
+            if(current->m_value == value) {
+                return current;
             }
 
-            if(m_left) {
-                node* found = m_left->find(value);
-                if(found) {
-                    *returnNode = found;
-                    return true;
+            return recFind(current->m_left, value)
+                    || recFind(current->m_right, value);
+        }
+
+        NODE* recFindFirst(NODE* current, O& op) {
+            NODE* left = current->m_left;
+            NODE* right = current->m_right;
+
+            if(!left && right) {
+                if(op(current->m_value, right->m_value)) {
+                    recFindFirst(right, op);
                 }
             }
 
-            if(m_right) {
-                node* found = m_right->find(value);
-                if(found) {
-                    *returnNode = found;
-                    return true;
+            if(left &&!right) {
+                if(op(left->m_value, current->m_value)) {
+                    recFindFirst(left, op);
                 }
             }
 
-            return false;
+            if(left && right) {
+                if(op(left->m_value, right->m_value)) {
+                    recFindFirst(left, op);
+                }
+                else {
+                    recFindFirst(right, op);
+                }
+            }
+
+            return current;
+        }
+
+        NODE* recFindLast(NODE* current, const O& op) {
+            NODE* left = current->m_left;
+            NODE* right = current->m_right;
+
+            if(!left && right) {
+                if(op(current, right)) {
+                    recFindFirst(current, op);
+                }
+            }
+
+            if(left &&!right) {
+                if(op(left, current)) {
+                    recFindFirst(current, op);
+                }
+            }
+
+            if(left && right) {
+                if(op(left, right)) {
+                    recFindFirst(right, op);
+                }
+                else {
+                    recFindFirst(left, op);
+                }
+            }
+
+            return current;
         }
 
     public:
-        TreeNode(T& value, TreeNode<T,O>* parent, TreeNode<T,O>* left, TreeNode<T,O>* right)
-            : m_value(value), m_up(parent), m_left(left), m_right(right) {
+        TreeNode(T value) : m_value(value), m_left(NULL), m_right(NULL), m_up(NULL) {
         }
 
-        node* find(const T& value) {
-            node* node = NULL;
-            bool found = recFind(value, &node);
-            if(found) {
-                return node;
-            }
-            return NULL;
+        T& value() {
+            return m_value;
         }
 
-        node* findFirst() {
-            if(!m_left && !m_right) {
-                return this;
-            }
+        TreeNode<T,O>* find(const T& value) {
+            return recFind(this, value);
+        }
 
+        TreeNode<T,O>* findFirst() {
             O op;
-
-            if(m_left && !m_right) {
-                node* left = m_left->findFirst();
-                if(op(m_value, left->m_value))
-                    return this;
-                else
-                    return left;
-            }
-
-            if(!m_left && m_right) {
-                node* right = m_right->findFirst();
-                if(op(m_value, right->m_value))
-                    return this;
-                else
-                    return right;
-            }
-
-            //if(m_left && m_right)
-            node* left = m_left->findFirst();
-            node* right = m_right->findFirst();
-
-            if(op(left->m_value, right->m_value))
-                return left;
-            else
-                return right;
+            return recFindFirst(this, op);
         }
 
-        node* findLast() {
-            if(!m_left && !m_right) {
-                return this;
-            }
-
-            if(m_left && !m_right) {
-                O op;
-                node* left = m_left->findLast();
-                if(op(m_value, left->m_value))
-                    return left;
-                else
-                    return this;
-            }
-
-            if(!m_left && m_right) {
-                O op;
-                node* right = m_right->findLast();
-                if(op(m_value, right->m_value))
-                    return right;
-                else
-                    return this;
-            }
-
-            //if(m_left && m_right)
+        TreeNode<T,O>* findLast() {
             O op;
-            node* left = m_left->findLast();
-            node* right = m_right->findLast();
-
-            if(op(left->m_value, right->m_value))
-                return right;
-            else
-                return left;
+            return recFindLast(this, op);
         }
 
         friend class Tree<T,O>;
@@ -143,3 +118,5 @@ namespace mystl {
 }
 
 #endif // TREENODE_H
+
+
