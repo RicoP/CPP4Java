@@ -19,20 +19,20 @@ namespace mystl {
             if(op(value, current->m_value)) {
                 if(!current->m_left) {
                     current->m_left = new node(value, current);
-                    return iterator(current->m_left);
+                    return iterator(current->m_left, this);
                 }
                 return recInsert(current->m_left, value, op);
             }
             if(op(current->m_value, value)) {
                 if(!current->m_right) {
                     current->m_right = new node(value, current);
-                    return iterator(current->m_right);
+                    return iterator(current->m_right, this);
                 }
                 return recInsert(current->m_right, value, op);
             }
 
             current->m_value = value;
-            return iterator(current);
+            return iterator(current, this);
         }
 
         void recClear(node* n) {
@@ -48,7 +48,7 @@ namespace mystl {
         iterator insert(const T& value) {
             if(!m_root) {
                 m_root = new node(value, NULL);
-                return iterator(m_root);
+                return iterator(m_root, this);
             }
             else {
                 O op;
@@ -66,14 +66,14 @@ namespace mystl {
 
         iterator begin() {
             if(m_root) {
-                return iterator(m_root->findFirst());
+                return iterator(m_root->findFirst(), this);
             }
 
             return end();
         }
 
         iterator end() {
-            return iterator(NULL);
+            return iterator(NULL, this);
         }
 
         iterator first() {
@@ -85,7 +85,7 @@ namespace mystl {
                 return end();
             }
 
-            return iterator(m_root->findLast());
+            return iterator(m_root->findLast(), this);
         }
 
         iterator find(const T& value) {

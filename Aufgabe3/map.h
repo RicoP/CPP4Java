@@ -21,35 +21,19 @@ namespace mystl {
 
     public:
         Map() : m_tree(tree()), defaultV(ValueT())  {
-        }
-
-        ValueT operator[](const KeyT& key) const {
-            for(iterator ite = m_tree.begin();
-                ite != m_tree.end();
-                ite++) {
-                if((*ite).value().first() == key) {
-                    return (*ite).second();
-                }
-            }
-
-            return ValueT();
-        }
+        }       
 
         ValueT& operator[](const KeyT& key) {
-            for(iterator ite = m_tree.begin();
-                ite != m_tree.end();
-                ++ite) {
-                if((*ite).first() == key) {
-                    return (*ite).second();
-                }
+            iterator it = this->find(key);
+
+            if(it != m_tree.end()){
+                Pair<KeyT, ValueT> &pair = *it;
+                return pair.second();
+            }else{
+                Pair<KeyT, ValueT> pairToInsert(key, ValueT());
+                return this->insert(pairToInsert)->second();
             }
-            //Index out of range. Insert:
-
-            Pair<KeyT, ValueT> p(key, defaultV);
-            m_tree.insert( p );
-            return defaultV;
         }
-
 
         iterator insert(const Pair<KeyT,ValueT>& value) {
             return m_tree.insert(value);
@@ -59,7 +43,7 @@ namespace mystl {
             for(iterator ite = m_tree.begin();
                 ite != m_tree.end();
                 ite++) {
-                if((*ite).value().first() == key) {
+                if((*ite).first() == key) {
                     return ite;
                 }
             }

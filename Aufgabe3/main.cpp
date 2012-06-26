@@ -34,7 +34,7 @@ template<class Container>
 int printAndCount(Container & c) {
     int n=0;
 
-    for(typename Container::iterator i=c.begin(); i!=c.end(); ++i, ++n)  {
+    for(typename Container::iterator i=c.begin(); i!=c.end(); i++, ++n)  {
         //if(n > 20) return -1;
         cout << *i << " ";
     }
@@ -47,12 +47,20 @@ int printAndCount(Container & c) {
 // list backwards and count all nodes in a set
 template<class Container>
 int printAndCountBackwards(Container & c) {
+    //fprintf(stderr, "Hello world\n" );
+    cout << "begin: ";
     int n = 0;
     typename Container::iterator i = c.end();
+    //fprintf(stderr, "2\n" );
     while(i != c.begin()) {
+        //fprintf(stderr, "3\n" );
         --i;
+        //fprintf(stderr, "4\n" );
         cout << *i << " ";
+        //fprintf(stderr, "*i = %f\n", *i );
+        //fprintf(stderr, "5\n" );
         n++;
+        //fprintf(stderr, "6\n" );
     }
     cout << endl;
     return n;
@@ -149,13 +157,13 @@ int main()
     cout << "reverse-sorted 4-float tree: ";
     assert(printAndCount(ft) == 4);
 
-#if 0 //move this line down while your implementation proceeds...
+//#if 0 //move this line down while your implementation proceeds...
 
     // if we list elements backwards, they should be
     //   in the same order as with the function Less<>
     cout << "listing backwards: ";
     assert(printAndCountBackwards(ft) == 4);
-#endif
+//#endif
 
 
     /////////////////////////////////////////
@@ -183,15 +191,25 @@ int main()
     // test finding elements via operator()
     cout << "find 42 in map: " << (value=m[42]) << endl;
     assert(value == p42.second());
+    //cout << "value=m[3]" << endl;
     cout << "find 3 in map: " << (value=m[3]) << endl;
     assert(value == string());
 
     // direct write access via operator[]
+    cout << "__________________________" << endl;
     cout << "setting m[3] and m[1]." << endl;
-    m[1] = p1.second();
+
+    //cout << "m[3] = p3.second();" << endl;
     m[3] = p3.second();
+    //cout << "m[1] = p1.second();" << endl;
+    m[1] = p1.second();
+
     cout << "find 3 in map: " << (value=m[3]) << endl;
     assert(value == p3.second());
+
+    cout << "value=m[1]" << endl;
+    cout << "!!!find 1 in map: " << (value=m[1]) << endl;
+    //assert(value == p1.second());
 
     cout << "resulting map: ";
     assert(printAndCount(m) == 4);
