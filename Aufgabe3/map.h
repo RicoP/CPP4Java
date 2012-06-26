@@ -17,10 +17,10 @@ namespace mystl {
 
     private:
         Tree< Pair<KeyT, ValueT> > m_tree;
-        ValueT defautltV;
+        ValueT defaultV;
 
     public:
-        Map() : m_tree(tree()), defautltV(ValueT())  {
+        Map() : m_tree(tree()), defaultV(ValueT())  {
         }
 
         ValueT operator[](const KeyT& key) const {
@@ -43,8 +43,11 @@ namespace mystl {
                     return (*ite).second();
                 }
             }
+            //Index out of range. Insert:
 
-            return defautltV;
+            Pair<KeyT, ValueT> p(key, defaultV);
+            m_tree.insert( p );
+            return defaultV;
         }
 
 
@@ -71,12 +74,25 @@ namespace mystl {
         iterator end() {
             return m_tree.end();
         }
-        //iterator first();
-        //iterator last();
-        //const KeyT& min();
-        //const KeyT& max();
-        //void clear();
+        iterator first() {
+            return m_tree.first();
+        }
 
+        iterator last() {
+            return m_tree.last();
+        }
+
+        const KeyT& min() {
+            return (*(m_tree.first())).first();
+        }
+
+        const KeyT& max() {
+            return (*(m_tree.last())).first();
+        }
+
+        void clear() {
+            m_tree.clear();
+        }
     };
 }
 

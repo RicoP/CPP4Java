@@ -45,31 +45,13 @@ namespace mystl {
         }
 
         NODE* recFindLast(NODE* current, const O& op) {
-            NODE* left = current->m_left;
             NODE* right = current->m_right;
 
-            if(!left && right) {
-                if(op(current, right)) {
-                    recFindFirst(current, op);
-                }
+            if(!right) {
+                return current;
             }
 
-            if(left &&!right) {
-                if(op(left, current)) {
-                    recFindFirst(current, op);
-                }
-            }
-
-            if(left && right) {
-                if(op(left, right)) {
-                    recFindFirst(right, op);
-                }
-                else {
-                    recFindFirst(left, op);
-                }
-            }
-
-            return current;
+            return recFindLast(right, op);
         }
 
     public:

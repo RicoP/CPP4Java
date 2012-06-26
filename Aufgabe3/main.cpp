@@ -193,21 +193,20 @@ int main()
     cout << "find 3 in map: " << (value=m[3]) << endl;
     assert(value == p3.second());
 
-    cout << "---------------\n";
     cout << "resulting map: ";
     assert(printAndCount(m) == 4);
-#if 0 //move this line down while your implementation proceeds...
 
     // test first() and last(), min() and max()
     Map<int,string>::iterator first = m.first();
     Map<int,string>::iterator last = m.last();
     cout << "first in map: " << *first << endl;
     cout << "last in map: " << *last << endl;
+
     assert(first->first() == 1);
+
     assert(last->first() == 42);
     assert(m.min() == first->first());
     assert(m.max() == last->first());
-#endif
 
     cout << "Success!" << endl;
 
