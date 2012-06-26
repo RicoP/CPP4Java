@@ -21,8 +21,13 @@ namespace mystl {
         T1& first() { return _first; }
 
         T2 second() const { return _second; }
-        T2& second() { return _second; }
+        T2& second() { return _second; }        
     };
+
+    template<typename T1, typename T2>
+    bool operator<( Pair<T1,T2> p1, Pair<T1,T2> p2 ) {
+        return p1.first() < p2.first();
+    }
 
     template<typename T1, typename T2>
     std::ostream& operator<<(std::ostream &lhs, const Pair<T1,T2> &pair) {

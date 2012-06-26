@@ -18,7 +18,7 @@ using namespace std;
 #include "maptofirst.h"
 //#include "order.h"
 #include "tree.h"
-//#include "map.h"
+#include "map.h"
 
 // you should define your own namespace for
 // the templates/classes in this project
@@ -34,8 +34,10 @@ template<class Container>
 int printAndCount(Container & c) {
     int n=0;
 
-    for(typename Container::iterator i=c.begin(); i!=c.end(); ++i, ++n)
+    for(typename Container::iterator i=c.begin(); i!=c.end(); ++i, ++n)  {
+        //if(n > 20) return -1;
         cout << *i << " ";
+    }
 
     cout << "(" << n << " elements)." << endl;
 
@@ -59,7 +61,6 @@ int printAndCountBackwards(Container & c) {
 
 int main()
 {
-
     cout << "Starting..." << endl;
 
     /////////////////////////////////////////
@@ -102,13 +103,19 @@ int main()
     t.insert(5);
     cout << "tree 4-3-2-1-5: ";
 
-    assert(printAndCount(t) != 5);
-#if 0 //move this line down while your implementation proceeds...
+    //TEST
+    /*Tree<int>::iterator ite = t.begin();
+    assert(*ite == 1);
+    ++ite;
+    assert(*ite == 2);*/
+
+    assert(printAndCount(t) == 5);
 
     // test clear()
     t.clear();
     cout << "after clear(): ";
     assert(printAndCount(t) == 0);
+
 
     // try another insertion order
     t.insert(1);
@@ -118,6 +125,7 @@ int main()
     t.insert(4);
     cout << "tree 1-2-3-5-4: ";
     assert(printAndCount(t) == 5);
+
 
     // and yet another insertion sequence
     t.clear();
@@ -130,6 +138,7 @@ int main()
     cout << "6-element tree: ";
     assert(printAndCount(t) == 6);
 
+
     // now we contruct a tree with a "reverse" order
     typedef Tree< float, Greater<float> > RevFloatTree;
     RevFloatTree ft;
@@ -140,10 +149,14 @@ int main()
     cout << "reverse-sorted 4-float tree: ";
     assert(printAndCount(ft) == 4);
 
+#if 0 //move this line down while your implementation proceeds...
+
     // if we list elements backwards, they should be
     //   in the same order as with the function Less<>
     cout << "listing backwards: ";
     assert(printAndCountBackwards(ft) == 4);
+#endif
+
 
     /////////////////////////////////////////
     // TEST MAP
@@ -154,13 +167,18 @@ int main()
     Pair<int,string> p7(7,"James Bond");
     string value;
 
-    Map<int,string, MapToFirst<int,string,Less> > m;
+    //Map<int,string, MapToFirst<int,string,Less> > m;
+    Map<int,string> m;
+
 
     // insert pairs of (key,value)
     m.insert(p42);
+
+
     m.insert(p7);
     cout << "map 42-7: ";
     assert(printAndCount(m) == 2);
+
 
     // test finding elements via operator()
     cout << "find 42 in map: " << (value=m[42]) << endl;
@@ -175,8 +193,10 @@ int main()
     cout << "find 3 in map: " << (value=m[3]) << endl;
     assert(value == p3.second());
 
+    cout << "---------------\n";
     cout << "resulting map: ";
     assert(printAndCount(m) == 4);
+#if 0 //move this line down while your implementation proceeds...
 
     // test first() and last(), min() and max()
     Map<int,string>::iterator first = m.first();

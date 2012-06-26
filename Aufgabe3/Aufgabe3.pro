@@ -24,4 +24,5 @@ HEADERS += \
     maptofirst.h \
     treenode.h \
     treeiterator.h \
-    tree.h
+    tree.h \
+    map.h

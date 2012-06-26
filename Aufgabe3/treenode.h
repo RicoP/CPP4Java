@@ -18,9 +18,9 @@ namespace mystl {
 
     protected:
         T m_value;
+        NODE* m_up;
         NODE* m_left;
         NODE* m_right;
-        NODE* m_up;
 
     private:
         NODE* recFind(NODE* current, const T& value) {
@@ -35,31 +35,13 @@ namespace mystl {
         }
 
         NODE* recFindFirst(NODE* current, O& op) {
-            NODE* left = current->m_left;
-            NODE* right = current->m_right;
+            NODE* left = current->m_left;            
 
-            if(!left && right) {
-                if(op(current->m_value, right->m_value)) {
-                    recFindFirst(right, op);
-                }
+            if(!left) {
+                return current;
             }
 
-            if(left &&!right) {
-                if(op(left->m_value, current->m_value)) {
-                    recFindFirst(left, op);
-                }
-            }
-
-            if(left && right) {
-                if(op(left->m_value, right->m_value)) {
-                    recFindFirst(left, op);
-                }
-                else {
-                    recFindFirst(right, op);
-                }
-            }
-
-            return current;
+            return recFindFirst(left, op);
         }
 
         NODE* recFindLast(NODE* current, const O& op) {
@@ -91,7 +73,7 @@ namespace mystl {
         }
 
     public:
-        TreeNode(T value) : m_value(value), m_left(NULL), m_right(NULL), m_up(NULL) {
+        TreeNode(T value, TreeNode<T,O>* up) : m_value(value), m_up(up), m_left(NULL), m_right(NULL) {
         }
 
         T& value() {
